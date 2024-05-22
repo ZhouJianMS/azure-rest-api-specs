@@ -1362,6 +1362,61 @@
         "cloudProviderProfile": {
           "description": "The underlying cloud infra provider properties.",
           "$ref": "#/definitions/CloudProviderProfile"
+        },
+        "witness":{ 
+          "$ref": "#/definitions/WitnessProfile",
+          "description": "Witness settings for the etcd cluster."
+        }
+      }
+    },
+    "WitnessProfile": {
+      "type": "object",
+      "properties": {
+        "type": { "$ref": "#/definitions/WitnessType" },
+        "endpoint": {
+          "type": "string"
+        }
+      },
+      "required": [ "type" ]
+    },
+    
+    "WitnessType": {
+      "type": "string",
+      "enum": ["NFS", "SMB", "AzureBlob"],
+      "x-ms-enum": {
+        "name": "WitnessType",
+        "modelAsString": true
+      }
+    },
+    "NfsWitnessProfile": {
+      "x-ms-discriminator-value": "NFS",
+      "type": "object",
+      "allOf": [ { "$ref": "#/definitions/WitnessProfile" } ]
+    },
+    "SmbWitnessProfile": {
+      "x-ms-discriminator-value": "SMB",
+      "type": "object",
+      "allOf": [ { "$ref": "#/definitions/WitnessProfile" } ],
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string",
+          "x-ms-mutability": ["create", "update"],
+          "x-ms-secret": true
+        }
+      }
+    },
+    "AzureBlobWitnessProfile": {
+      "x-ms-discriminator-value": "AzureBlob",
+      "type": "object",
+      "allOf": [ { "$ref": "#/definitions/WitnessProfile" } ],
+      "properties": {
+        "sasToken": {
+          "type": "string",
+          "x-ms-mutability": ["create", "update"],
+          "x-ms-secret": true
         }
       }
     },
