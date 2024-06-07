@@ -1683,13 +1683,14 @@
     },
     "WitnessProfile": {
       "type": "object",
+      "discriminator": "type",
       "properties": {
         "type": { "$ref": "#/definitions/WitnessType" },
         "endpoint": {
           "type": "string"
         }
       },
-      "required": [ "type" ]
+      "required": [ "type", "endpoint" ]
     },
     
     "WitnessType": {
@@ -1718,7 +1719,8 @@
           "x-ms-mutability": ["create", "update"],
           "x-ms-secret": true
         }
-      }
+      },
+      "required": [ "username" ]
     },
     "AzureBlobWitnessProfile": {
       "x-ms-discriminator-value": "AzureBlob",
